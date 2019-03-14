@@ -110,6 +110,7 @@ li span {
   text-align: center;
   font-size: 60px;
   text-shadow: 0.01em 0.01em 0 yellow, -0.01em -0.01em 0 magenta;
+  text-transform: uppercase;
 
 
 }
