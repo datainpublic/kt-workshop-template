@@ -63,7 +63,7 @@ setInterval(foo, 10000);
 
 
 function toggleFullscreen() {
-  var elem = document.querySelector("#wrapper");
+  var elem = document.querySelector("html");
 
   if (!document.fullscreenElement) {
     elem.requestFullscreen().then({}).catch(err => {
