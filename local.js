@@ -32,7 +32,7 @@ if (queryDict.message != false) {
 $(".prependto").append("<li id='xkcd'><marquee>1.5˚ Climate Crisis " + day.toFixed(1) + " years <span class='part'>" + duration.minutes() + "</span> min</marquee></li>")
 
 function foo() {
-  $.getJSON( "http://reisapi.ruter.no/StopVisit/GetDepartures/" + queryDict.stop, function( data ) {
+  $.getJSON( "https://reisapi.ruter.no/StopVisit/GetDepartures/" + queryDict.stop, function( data ) {
     var items = [];
     var lol = 0;
     $.each( data, function( key, val ) {
