@@ -1,0 +1,115 @@
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+body {
+  background: #000;
+  margin: 0;
+  padding: 0;
+  font-family: "VT323", monospace;
+  font-size: 20px;
+  user-select: none;
+}
+
+.frame {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  width: 80%;
+  height: 40%;
+  margin: -20% 0 0 -40%;
+  border: 2px solid #fff;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+figcaption {
+  position: absolute;
+  bottom: -1.6em;
+  right: 0;
+  font-size: 36px;
+  text-shadow: 0.01em 0.01em 0 yellow, -0.01em -0.01em 0 magenta;
+  letter-spacing: 0.01em;
+}
+.prependto {
+  position: absolute;
+}
+
+
+#xkcd span {
+  display: inline;
+}
+
+ul {
+  display: block;
+  list-style: none;
+  max-width: 100%;
+  overflow: hidden;
+  color: #fff;
+  margin: 0;
+  padding: 3vw;
+  font-weight: 400;
+  font-size: 100px;
+}
+
+li {
+  padding: 0;
+  line-height: 1.1em;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  text-shadow: 0.01em 0.01em 0 yellow, -0.01em -0.01em 0 magenta;
+}
+
+li span {
+  display: block;
+}
+
+
+.destination {
+  align-self: center;
+  flex-grow: 2;
+  padding-left: 0.5em;
+  font-size: 1em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#message {
+
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  margin-left: -40%;
+  width: 80%;
+  color: #fff;
+  text-align: center;
+  font-size: 60px;
+  text-shadow: 0.01em 0.01em 0 yellow, -0.01em -0.01em 0 magenta;
+
+
+}
