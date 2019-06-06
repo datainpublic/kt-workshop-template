@@ -1,66 +1,129 @@
 var queryDict = {stop: 3010007, dir: 1, message: false}
 location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
 
-moment.updateLocale('en', {
-    relativeTime : {
-        future: "%s",
-        past:   "Nå",
-        s  : 'Nå',
-        ss : 'Nå',
-        m:  "1min",
-        mm: "%dmin",
-        h:  "an hour",
-        hh: "%d hours",
-        nd:  "a day",
-        dd: "%d days",
-        M:  "a month",
-        MM: "%d months",
-        y:  "a year",
-        yy: "%d years"
-    }});
-
-var n = moment([2031, 0, 1])
-var day = n.diff(moment(), 'years', true);
-var di = n.diff(moment());
-
-var duration = moment.duration(di);
-
+// Add a message below the display if needed.
 if (queryDict.message != false) {
   $("#message").html(decodeURIComponent(queryDict.message));
 }
 
-$(".prependto").append("<li id='xkcd'><marquee>1.5˚ Climate Crisis " + day.toFixed(1) + " years <span class='part'>" + duration.minutes() + "</span> min</marquee></li>")
+// Configure the display of time.
+moment.updateLocale('en', {
+  relativeTime : {
+    future: "%s",
+    past:   "Now",
+    s  : 'Now',
+    ss : 'Now',
+    m:  "1min",
+    mm: "%dmin",
+    h:  "an hour",
+    hh: "%dhours",
+    nd:  "a day",
+    dd: "%d days",
+    M:  "a month",
+    MM: "%d months",
+    y:  "a year",
+    yy: "%d years"
+  }});
 
-function foo() {
-  $.getJSON( "https://reisapi.ruter.no/StopVisit/GetDepartures/" + queryDict.stop, function( data ) {
-    var items = [];
-    var lol = 0;
-    $.each( data, function( key, val ) {
-      if (val.MonitoredVehicleJourney.DirectionRef == queryDict.dir && lol < 1) {
-        lol++;
-        items.push( "<li  class='derp' id='yo" + key + "'><span class='busn'>" + val.MonitoredVehicleJourney.LineRef + "</span> <span class='destination'>" + val.MonitoredVehicleJourney.DestinationName + "</span> <span class='time'>" + moment(val.MonitoredVehicleJourney.MonitoredCall.AimedArrivalTime).fromNow() + "</span></li>" );
-      } else if (val.MonitoredVehicleJourney.DirectionRef == null && lol < 1)  {
-        lol++;
-        items.push( "<li  class='derp' id='yo" + key + "'><span class='busn'>" + val.MonitoredVehicleJourney.LineRef + "</span> <span class='destination'>" + val.MonitoredVehicleJourney.DestinationName + "</span> <span class='time'>" + moment(val.MonitoredVehicleJourney.MonitoredCall.AimedArrivalTime).fromNow() + "</span></li>" );
-      }
-    });
 
-    day = n.diff(moment(), 'years', true);
-    di = n.diff(moment());
-    duration = moment.duration(di);
 
-    $('.part').replaceWith("<span id='part'>" + duration.minutes() + "</span>");
 
-    $('.derp').remove();
-    $(".prependto").prepend(items);
-  });
+
+/*
+ *
+ * Adjust the message below to reflect what you want to say.
+ *
+ **/
+
+const time_to_event = moment([2031, 0, 1]);
+
+/******/
+
+var day = time_to_event.diff(moment(), 'years', true);
+var di = time_to_event.diff(moment());
+var duration = moment.duration(di);
+
+/*
+ *
+ * Adjust the message below to reflect what you want to say.
+ *
+ **/
+
+const marquee_message =
+  `<li id="xkcd"><marquee>
+
+  1.5˚ Climate Crisis ${day.toFixed(1)} years <span class='part'>${duration.minutes()}</span>min
+
+  </marquee></li>`;
+
+/*******/
+
+
+
+
+
+
+
+$(".prependto").append(marquee_message);
+
+/* RENDER THE CHANGE */
+
+var render_page = function(latest) {
+
+  var items = [];
+
+  items.push( "<li  class='remove' id='yo" + 0 + "'><span class='busn'>" +
+    latest.PublishedLineName[0] + "</span> <span class='destination'>" +
+    latest.DestinationName + "</span> <span class='time'>" +
+    moment(latest.MonitoredCall.ExpectedArrivalTime).fromNow() + "</span></li>" );
+
+  di = time_to_event.diff(moment());
+  duration = moment.duration(di);
+
+  $('.part').replaceWith("<span id='part'>" + duration.minutes() + "</span>");
+
+  $('.remove').remove();
+  $(".prependto").prepend(items);
 
 }
 
-foo();
+/* QUERY THE API */
 
-setInterval(foo, 10000);
+const key = "a407ac8f-a1ec-4ce2-a1db-39dcbf47f2ee";
 
+const stop_id = queryDict.stop || 400153;
+
+var query_stop_data = function() {
+  const request_url = `http://bustime.mta.info/api/siri/stop-monitoring.json?key=${key}&version=2&MonitoringRef=${stop_id}&StopMonitoringDetailLevel=minimum`;
+
+  $.getJSON( request_url, function( data ) {
+    var latest = null;
+    const monitored = data["Siri"]["ServiceDelivery"]["StopMonitoringDelivery"][0]["MonitoredStopVisit"];
+
+    $.each(monitored, function(key, val) {
+      const current = val["MonitoredVehicleJourney"];
+      const current_time = moment(current["MonitoredCall"]["ExpectedArrivalTime"]);
+
+      if (current["MonitoredCall"]["ExpectedArrivalTime"]) {
+        if (latest) {
+          if (moment(latest["MonitoredCall"]["ExpectedArrivalTime"]).diff(current_time) > 0) {
+            latest = current;
+          }
+        } else {
+          latest = current;
+        }
+      }
+
+    });
+
+    render_page(latest);
+
+  });
+}
+
+query_stop_data();
+
+setInterval(query_stop_data, 10000);
 
 function toggleFullscreen() {
   var elem = document.querySelector("html");
