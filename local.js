@@ -1,4 +1,4 @@
-var queryDict = {stop: 3010007, dir: 1, message: false}
+var queryDict = {stop: 400153, dir: 1, message: false}
 location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
 
 // Add a message below the display if needed.
@@ -31,7 +31,7 @@ moment.updateLocale('en', {
 
 /*
  *
- * Adjust the message below to reflect what you want to say.
+ * Set your own date in the future here.
  *
  **/
 
@@ -91,10 +91,8 @@ var render_page = function(latest) {
 
 const key = "a407ac8f-a1ec-4ce2-a1db-39dcbf47f2ee";
 
-const stop_id = queryDict.stop || 400153;
-
 var query_stop_data = function() {
-  const request_url = `http://bustime.mta.info/api/siri/stop-monitoring.json?key=${key}&version=2&MonitoringRef=${stop_id}&StopMonitoringDetailLevel=minimum`;
+  const request_url = `http://bustime.mta.info/api/siri/stop-monitoring.json?key=${key}&version=2&MonitoringRef=${queryDict.stop}&StopMonitoringDetailLevel=minimum`;
 
   $.getJSON( request_url, function( data ) {
     var latest = null;
