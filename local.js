@@ -92,7 +92,7 @@ var render_page = function(latest) {
 const key = "a407ac8f-a1ec-4ce2-a1db-39dcbf47f2ee";
 
 var query_stop_data = function() {
-  const request_url = `http://bustime.mta.info/api/siri/stop-monitoring.json?key=${key}&version=2&MonitoringRef=${queryDict.stop}&StopMonitoringDetailLevel=minimum`;
+  const request_url = `https://bustime.mta.info/api/siri/stop-monitoring.json?key=${key}&version=2&MonitoringRef=${queryDict.stop}&StopMonitoringDetailLevel=minimum`;
 
   $.getJSON( request_url, function( data ) {
     var latest = null;
