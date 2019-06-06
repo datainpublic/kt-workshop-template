@@ -39,9 +39,13 @@ const time_to_event = moment([2031, 0, 1]);
 
 /******/
 
-var day = time_to_event.diff(moment(), 'years', true);
-var di = time_to_event.diff(moment());
-var duration = moment.duration(di);
+var years_to_event = time_to_event.diff(moment(), 'years', true).toFixed(1);
+var months_to_event = time_to_event.diff(moment(), 'months', true).toFixed(1);
+var days_to_event = time_to_event.diff(moment(), 'days', true).toFixed(1);
+
+var between_now_and_event = time_to_event.diff(moment());
+var duration = moment.duration(between_now_and_event).minutes();
+
 
 /*
  *
@@ -52,7 +56,7 @@ var duration = moment.duration(di);
 const marquee_message =
   `<li id="xkcd"><marquee>
 
-  1.5˚ Climate Crisis ${day.toFixed(1)} years <span class='part'>${duration.minutes()}</span>min
+  1.5˚ Climate Crisis ${years_to_event} years <span id="minutes" class='part'>${duration}</span>min
 
   </marquee></li>`;
 
@@ -77,10 +81,10 @@ var render_page = function(latest) {
     latest.DestinationName + "</span> <span class='time'>" +
     moment(latest.MonitoredCall.ExpectedArrivalTime).fromNow() + "</span></li>" );
 
-  di = time_to_event.diff(moment());
-  duration = moment.duration(di);
+  let between_now_and_event = time_to_event.diff(moment());
+  let duration = moment.duration(between_now_and_event).minutes();
 
-  $('.part').replaceWith("<span id='part'>" + duration.minutes() + "</span>");
+  $('#minutes').replaceWith("<span id='part'>" + duration + "</span>");
 
   $('.remove').remove();
   $(".prependto").prepend(items);
@@ -121,7 +125,7 @@ var query_stop_data = function() {
 
 query_stop_data();
 
-setInterval(query_stop_data, 10000);
+setInterval(query_stop_data, 20000);
 
 function toggleFullscreen() {
   var elem = document.querySelector("html");
