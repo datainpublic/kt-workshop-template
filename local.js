@@ -56,7 +56,7 @@ var duration = moment.duration(between_now_and_event).minutes();
 const marquee_message =
   `<li id="xkcd"><marquee>
 
-7 days until three more people will die in prison
+The US will close the gender pay gap in: 201 years
 
   </marquee></li>`;
 
