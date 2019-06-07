@@ -56,7 +56,7 @@ var duration = moment.duration(between_now_and_event).minutes();
 const marquee_message =
   `<li id="xkcd"><marquee>
 
-Gender pay gap closes in: 201 years
+The gender pay gap closes in: 73365 days
 
   </marquee></li>`;
 
